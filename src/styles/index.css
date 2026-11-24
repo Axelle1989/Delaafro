@@ -1,0 +1,214 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-cream: #FAF3EA;
+  --color-terracotta: #8B4A2B;
+  --color-chocolate: #2B1A12;
+  --color-gold: #C9A66B;
+  --color-forest: #2F6B4F;
+}
+
+@layer components {
+  /* Unified Ultra-Wide Responsive Site Container */
+  .site-container {
+    @apply w-full mx-auto px-4 sm:px-6 lg:px-10 xl:px-14 2xl:px-20 max-w-[1920px];
+  }
+
+  /* 1. Surtitre de section / Overline (Eyebrow) */
+  .eyebrow {
+    @apply font-sans text-xs font-semibold uppercase tracking-[0.2em] text-terracotta inline-flex items-center gap-2;
+  }
+
+  /* 2. Titre de section serif bold */
+  .section-title {
+    @apply font-serif text-3xl md:text-4xl xl:text-5xl font-bold text-brun-nuit leading-tight tracking-tight text-balance;
+  }
+
+  /* Titre de section avec soulignement doré intégré */
+  .section-title-underlined {
+    @apply section-title relative pb-4;
+  }
+  .section-title-underlined::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-16 sm:w-20 h-1 bg-gradient-cuivre-or rounded-full;
+  }
+  .section-title-underlined-center {
+    @apply section-title relative pb-4;
+  }
+  .section-title-underlined-center::after {
+    content: '';
+    @apply absolute bottom-0 left-1/2 -translate-x-1/2 w-16 sm:w-20 h-1 bg-gradient-cuivre-or rounded-full;
+  }
+
+  /* Version H1 de page pleine échelle */
+  .page-title {
+    @apply font-serif text-4xl sm:text-5xl xl:text-6xl font-bold text-brun-nuit tracking-tight leading-[1.1] text-balance;
+  }
+
+  /* Soulignement doré autonome */
+  .gold-underline {
+    @apply w-16 h-[2px] bg-gradient-cuivre-or rounded-full mt-3;
+  }
+  .gold-underline-center {
+    @apply gold-underline mx-auto;
+  }
+
+  /* 3. Sous-titre / Introduction de section (Section Lead) */
+  .section-lead {
+    @apply font-sans text-base lg:text-lg text-brun-nuit/70 leading-relaxed max-w-2xl;
+  }
+
+  /* 4. Corps de texte / Paragraphes éditoriaux (Prose Body) */
+  .prose-body {
+    @apply font-sans text-base sm:text-lg lg:text-xl text-brun-nuit/85 leading-relaxed;
+  }
+
+  /* 5. Citation mise en valeur (Quote Block) */
+  .quote-block {
+    @apply font-serif italic text-2xl sm:text-3xl lg:text-4xl text-brun-nuit border-l-4 border-or pl-6 my-6 sm:my-8 py-3 bg-sable/20 rounded-r-2xl leading-snug;
+  }
+
+  /* 6. Titre de carte (Card Title) */
+  .card-title {
+    @apply font-serif text-xl sm:text-2xl font-bold text-brun-nuit leading-snug;
+  }
+
+  /* 7. Texte de carte (Card Text) */
+  .card-text {
+    @apply font-sans text-sm sm:text-base text-brun-nuit/75 leading-relaxed;
+  }
+
+  /* Badge / Pilule terracotta pleine */
+  .pill-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-terracotta text-white font-sans text-xs uppercase tracking-wider font-semibold shadow-xs;
+  }
+
+  /* Prix standardisé */
+  .product-price {
+    @apply font-serif font-bold text-terracotta;
+  }
+}
+
+:root {
+  --color-terracotta: #B5532B;
+  --color-terracotta-deep: #8A3A1A;
+  --color-brun-nuit: #2A1409;
+  --color-creme: #F8EBDD;
+  --color-sable: #EBD3B8;
+  --color-cuivre: #D99A6C;
+  --color-or: #E8B77E;
+  --color-feuille: #5E7A4A;
+}
+
+/* Smooth Scrolling & Base */
+html {
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--color-creme);
+  color: var(--color-brun-nuit);
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+}
+
+button, a {
+  -webkit-touch-callout: none;
+}
+
+/* Custom Selection */
+::selection {
+  background-color: #B5532B;
+  color: #FFFFFF;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F8EBDD;
+}
+::-webkit-scrollbar-thumb {
+  background: #D99A6C;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B5532B;
+}
+
+/* Metallic Text Gradient */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #D99A6C 0%, #F2D0A4 40%, #E8B77E 70%, #B5532B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-terracotta {
+  background: linear-gradient(135deg, #B5532B 0%, #8A3A1A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Subtle Organic Texture Overlay */
+.bg-grain {
+  background-image: radial-gradient(rgba(42, 20, 9, 0.04) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Golden Border Sheen */
+.border-gold-sheen {
+  border-image: linear-gradient(135deg, #D99A6C, #E8B77E, #B5532B) 1;
+}
+
+/* Shimmer sweeping effect */
+.shimmer-card {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 30%,
+    rgba(232, 183, 126, 0.15) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.8s ease;
+  pointer-events: none;
+}
+.shimmer-card:hover::after {
+  transform: translateX(100%);
+}
+
+/* Hero photo smooth long progressive fade */
+.hero-photo-fade {
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 12%, rgba(0, 0, 0, 0.8) 28%, black 45%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 12%, rgba(0, 0, 0, 0.8) 28%, black 45%);
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
