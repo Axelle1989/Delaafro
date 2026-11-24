@@ -12,8 +12,8 @@ const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const MAX_REQUESTS_PER_WINDOW = 20;
 const ipRequestCounts = new Map();
 
-// Nettoyage périodique des IPs expirées
-setInterval(() => {
+// Nettoyage périodique des IPs expirées (unref pour ne pas bloquer la fin de vite build)
+const cleanupInterval = setInterval(() => {
   const now = Date.now();
   for (const [ip, data] of ipRequestCounts.entries()) {
     if (now - data.firstRequestTime > RATE_LIMIT_WINDOW_MS) {
@@ -21,6 +21,9 @@ setInterval(() => {
     }
   }
 }, 60 * 1000);
+if (typeof cleanupInterval.unref === 'function') {
+  cleanupInterval.unref();
+}
 
 // Charger la base de connaissances
 let cachedKnowledge = null;
