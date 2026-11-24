@@ -1,0 +1,225 @@
+{
+  "brand": {
+    "nom": "DELAAFRO",
+    "slogan": "La noblesse du naturel, l'excellence du soin.",
+    "histoire": "Marque béninoise artisanale fondée pour célébrer et sublimer les cheveux afro, crépus (3C à 4C) et locksés à l'aide de trésors botaniques locaux nobles (karité brut de premier choix du nord du Bénin, huiles précieuses de ricin, coco et moringa pressées à froid), 100% naturels, sans sulfates, sans silicones et sans dérivés pétrochimiques."
+  },
+  "contacts": {
+    "whatsapp": "+229 45 48 34 73",
+    "whatsapp_link": "https://wa.me/22945483473",
+    "telephone2": "[À REMPLIR]",
+    "email": "contact@delaafro.com",
+    "instagram": "https://www.instagram.com/delaafro_",
+    "facebook": "https://www.facebook.com/dela.afro/",
+    "tiktok": "https://tiktok.com/@delaafro",
+    "youtube": "[À REMPLIR]",
+    "adresse": "Cotonou, Bénin",
+    "horaires": "Lundi au Samedi : 08h00 – 19h30"
+  },
+  "livraison": {
+    "zones": "Livraison locale au Bénin (Cotonou, Calavi, Porto-Novo, Parakou et toutes villes) et expédition internationale partout en Afrique et dans le monde.",
+    "delais": "Bénin : sous 24h à 48h selon la ville. International : délais confirmés sur WhatsApp.",
+    "frais": "Calculés et confirmés sur WhatsApp selon votre adresse exacte et le poids du colis.",
+    "paiement": "Paiement Mobile Money (MTN MoMo, Moov Money) au Bénin, ou virement / modalités confirmées sur WhatsApp."
+  },
+  "retours": "En raison de la nature cosmétique et hygiénique de nos soins artisanaux, les retours sont traités au cas par cas avant ouverture. Contactez immédiatement notre service client sur WhatsApp en cas de problème à la réception.",
+  "gammes": [
+    {
+      "id": "gamme-complete",
+      "slug": "gamme-complete",
+      "nom": "Gamme Complète DELAAFRO (5 Soins)",
+      "description": "Véritable célébration de la beauté crépue, la Gamme Complète DELAAFRO réunit les 5 soins indispensables formulés au Bénin : Shampoing Doux nettoyant, Sérum Capillaire fortifiant, Spray Hydratant rafraîchissant, Baume Nourrissant intense et Leave-in Démêlant protecteur.",
+      "prix_fcfa": 18000,
+      "prix_origine_fcfa": 21500,
+      "type_cheveux": "Cheveux crépus 3C, 4A, 4B, 4C",
+      "lien": "/produit/gamme-complete",
+      "image": "/products/gammes/gamme-complete-5-soins-alignes-2.jpg",
+      "produits": [
+        {
+          "id": "shampoing-doux",
+          "slug": "shampoing-doux",
+          "nom": "Shampoing Doux Respectueux",
+          "prix_fcfa": 3500,
+          "contenance": "250 ml",
+          "ingredients": "Base lavante végétale douce, glycérine végétale, extraits botaniques adoucissants",
+          "bienfaits": "Nettoie impuretés et sébum sans décaper le film hydrolipidique ni assécher la boucle.",
+          "mode_emploi": "Appliquer sur cuir chevelu mouillé, masser délicatement du bout des doigts, rincer à l'eau tiède.",
+          "type_cheveux": "Tous types de cheveux crépus et locksés",
+          "lien": "/produit/shampoing-doux",
+          "image": "/products/soins/shampoing-doux/shampoing-doux-principale.jpg"
+        },
+        {
+          "id": "spray-hydratant",
+          "slug": "spray-hydratant",
+          "nom": "Spray Hydratant Quotidien",
+          "prix_fcfa": 3500,
+          "contenance": "250 ml",
+          "ingredients": "Eau pure, gel d'aloe vera frais béninois, hydrolats floraux, vitamines",
+          "bienfaits": "Désaltère instantanément la fibre, assouplit et rafraîchit sans effet carton.",
+          "mode_emploi": "Vaporiser sur l'ensemble de la chevelure avant le coiffage ou au réveil.",
+          "type_cheveux": "Cheveux crépus et locksés",
+          "lien": "/produit/spray-hydratant",
+          "image": "/products/soins/spray-hydratant/spray-hydratant-principale.jpg"
+        },
+        {
+          "id": "serum-capillaire",
+          "slug": "serum-capillaire",
+          "nom": "Sérum Capillaire Fortifiant – Forte Porosité",
+          "prix_fcfa": 4500,
+          "contenance": "100 ml",
+          "ingredients": "Huile pure de ricin pressée à froid, huiles végétales nobles béninoises",
+          "bienfaits": "Comble les cuticules ouvertes, stimule la microcirculation du cuir chevelu, active la pousse et scelle l'hydratation.",
+          "mode_emploi": "Appliquer quelques gouttes à la racine et sur les pointes 2 à 3 fois par semaine en massant 5 minutes.",
+          "type_cheveux": "Cheveux crépus à forte porosité et pointes sèches",
+          "lien": "/produit/serum-capillaire",
+          "image": "/products/soins/serum-forte-porosite/serum-capillaire-principale.jpg"
+        },
+        {
+          "id": "baume-nourrissant",
+          "slug": "baume-nourrissant",
+          "nom": "Baume Nourrissant Intense (Beurre Capillaire)",
+          "prix_fcfa": 4500,
+          "contenance": "200 ml",
+          "ingredients": "Beurre de karité brut béninois non raffiné, huiles végétales douces réparatrices",
+          "bienfaits": "Gaine la tige capillaire, scelle durablement l'eau dans la fibre et répare les pointes fourchues.",
+          "mode_emploi": "Faire fondre une noisette entre les paumes et répartir des mi-longueurs aux pointes après hydratation.",
+          "type_cheveux": "Cheveux crépus très secs et cassants",
+          "lien": "/produit/baume-nourrissant",
+          "image": "/products/soins/baume-nourrissant/baume-nourrissant-principale.jpg"
+        },
+        {
+          "id": "leave-in-demelant",
+          "slug": "leave-in-demelant",
+          "nom": "Leave-in Démêlant Protecteur",
+          "prix_fcfa": 4000,
+          "contenance": "250 ml",
+          "ingredients": "Extrait d'Aloe Vera pur, huiles légères végétales, actifs démêlants naturels",
+          "bienfaits": "Démêle sans douleur, protège contre la casse mécanique et maintient la souplesse toute la journée.",
+          "mode_emploi": "Appliquer section par section sur cheveux humides avant le peignage ou le coiffage protecteur.",
+          "type_cheveux": "Cheveux 4A, 4B, 4C sujets aux nœuds",
+          "lien": "/produit/leave-in-demelant",
+          "image": "/products/soins/leave-in-demelant/leave-in-demelant-principale.jpg"
+        }
+      ]
+    },
+    {
+      "id": "gamme-hydratation",
+      "slug": "gamme-hydratation",
+      "nom": "Gamme Hydratation (4 Soins)",
+      "description": "Le rituel hydratant complet pour enrayer la sécheresse chronique des cheveux crépus : Shampoing Doux, Spray Hydratant, Baume Nourrissant et Sérum Capillaire.",
+      "prix_fcfa": 15000,
+      "prix_origine_fcfa": 17500,
+      "type_cheveux": "Cheveux crépus secs et déshydratés",
+      "lien": "/produit/gamme-hydratation",
+      "image": "/products/gammes/gamme-hydratation-4-soins-officielle.jpg"
+    },
+    {
+      "id": "gamme-essentielle",
+      "slug": "gamme-essentielle",
+      "nom": "Gamme Essentielle (3 Soins)",
+      "description": "Le trio fondamental indispensable : Shampoing Doux pour nettoyer, Baume Nourrissant pour réparer et Sérum Capillaire pour sceller et fortifier.",
+      "prix_fcfa": 12000,
+      "prix_origine_fcfa": 14000,
+      "type_cheveux": "Routine minimaliste efficace pour cheveux crépus",
+      "lien": "/produit/gamme-essentielle",
+      "image": "/products/gammes/gamme-essentielle-3-soins-officielle.jpg"
+    },
+    {
+      "id": "gamme-lockses",
+      "slug": "gamme-lockses",
+      "nom": "Gamme Locksés (3 Soins)",
+      "description": "Le rituel léger conçu pour l'entretien des locks sans résidus : Shampoing Doux purifiant, Spray Hydratant quotidien et Sérum Capillaire fortifiant.",
+      "prix_fcfa": 12000,
+      "prix_origine_fcfa": null,
+      "type_cheveux": "Locks, microlocks, sisterlocks, départs de locks",
+      "lien": "/produit/gamme-lockses",
+      "image": "/products/gammes/gamme-lockses-trio-plateau.jpg"
+    }
+  ],
+  "accessoires": [
+    {
+      "id": "kit-accessoires-complet",
+      "slug": "kit-accessoires-complet",
+      "nom": "Kit Accessoires Capillaires Professionnel (8 pièces)",
+      "prix_fcfa": 8500,
+      "description": "Brumisateur 360°, brosse souple aérée, brosse massante silicone, peigne à dents larges, peigne à queue, brosse bordures edge, scrunchie satin et 4 pinces.",
+      "lien": "/produit/kit-accessoires-complet"
+    },
+    {
+      "id": "brumisateur-continu-360",
+      "slug": "brumisateur-continu-360",
+      "nom": "Brumisateur Continu 360° Ultra-Fin",
+      "prix_fcfa": 3000,
+      "description": "Diffusion continue d'une brume ultra-fine qui pénètre au cœur de la fibre sans tremper.",
+      "lien": "/produit/brumisateur-continu-360"
+    },
+    {
+      "id": "flacons-applicateurs-peigne-trio",
+      "slug": "flacons-applicateurs-peigne-trio",
+      "nom": "Flacons Applicateurs à Peigne Intégré (Trio)",
+      "prix_fcfa": 3000,
+      "description": "Pour distribuer vos huiles et sérums directement à la racine entre les tresses sans salir les mains.",
+      "lien": "/produit/flacons-applicateurs-peigne-trio"
+    },
+    {
+      "id": "brosse-demelante-souple-aeree",
+      "slug": "brosse-demelante-souple-aeree",
+      "nom": "Brosse Démêlante Anti-Casse Souple Aérée",
+      "prix_fcfa": 2500,
+      "description": "Picots flexibles séparés qui accompagnent le mouvement de la boucle sans l'arracher.",
+      "lien": "/produit/brosse-demelante-souple-aeree"
+    },
+    {
+      "id": "scrunchies-satin-soie-trio",
+      "slug": "scrunchies-satin-soie-trio",
+      "nom": "Scrunchies en Satin de Soie Pur (Trio Protecteur)",
+      "prix_fcfa": 2000,
+      "description": "Maintient les chignons sans friction ni casse pour la nuit et la journée.",
+      "lien": "/produit/scrunchies-satin-soie-trio"
+    }
+  ],
+  "routines": [
+    {
+      "type_cheveux": "Cheveux crépus secs à forte porosité (Méthode LOC/LCO)",
+      "etapes": [
+        "1. Nettoyer : Shampoing Doux 1 fois par semaine à l'eau tiède.",
+        "2. Hydrater (Liquid) : Vaporiser le Spray Hydratant sur les longueurs ou appliquer le Leave-in Démêlant.",
+        "3. Nourrir (Cream) : Chauffer une noisette de Baume Nourrissant au karité pour gainer la tige.",
+        "4. Sceller (Oil) : Appliquer 3 à 4 gouttes de Sérum Capillaire Fortifiant sur les pointes et masser le cuir chevelu.",
+        "5. Protéger : Attacher avec un chouchou satin et dormir avec un bonnet en satin."
+      ]
+    },
+    {
+      "type_cheveux": "Cheveux locksés",
+      "etapes": [
+        "1. Laver le cuir chevelu avec le Shampoing Doux sans résidus toutes les 1 à 2 semaines.",
+        "2. Au quotidien, rafraîchir et assouplir avec le Spray Hydratant sur toute la longueur.",
+        "3. Appliquer 2 fois par semaine le Sérum Capillaire à la racine en massant délicatement pour stimuler la pousse."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Comment savoir quelle gamme me convient ?",
+      "reponse": "Si vous souhaitez la routine complète de A à Z (lavage, hydratation, démêlage, nutrition et scellage), la Gamme Complète (5 soins) est le choix royal. Pour cibler la sécheresse intense, la Gamme Hydratation (4 soins) est idéale. Pour un rituel minimaliste, la Gamme Essentielle (3 soins) suffit. Pour les locks, optez pour la Gamme Locksés."
+    },
+    {
+      "question": "Vos produits conviennent-ils aux enfants ?",
+      "reponse": "Oui, nos formulations sont 100% naturelles, végétales et sans perturbateurs endocriniens, idéales pour prendre soin des cheveux d'enfants dès 3 ans avec douceur."
+    },
+    {
+      "question": "Comment passer commande ?",
+      "reponse": "Vous pouvez ajouter vos soins au panier sur le site, ou commander en 1 clic directement sur notre WhatsApp officiel (+229 45 48 34 73) où nous confirmons la disponibilité et la livraison avec vous."
+    }
+  ],
+  "pages_du_site": {
+    "accueil": "/",
+    "boutique": "/boutique",
+    "gammes": "/nos-gammes",
+    "accessoires": "/accessoires",
+    "routine": "/ma-routine",
+    "a_propos": "/a-propos",
+    "avis": "/elles-ont-sublime-leur-afro",
+    "contact": "/contact"
+  }
+}
