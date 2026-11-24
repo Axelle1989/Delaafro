@@ -61,7 +61,11 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         });
 
         if (error) {
-          return { success: false, error: 'Identifiants incorrects ou utilisateur inexistant.' };
+          console.error('[AdminAuth] Supabase login error:', error);
+          return {
+            success: false,
+            error: `Erreur Supabase : ${error.message}`,
+          };
         }
 
         if (data.user) {
