@@ -4,14 +4,13 @@
 -- ==============================================================================
 
 INSERT INTO public.products (
-    id, name, slug, category, category_label, subtitle,
+    name, slug, category, category_label, subtitle,
     short_description, long_description, composition, benefits,
     usage_instructions, price, original_price, images, variants,
     badge, is_featured, is_published, in_stock, display_order
 )
 VALUES
 (
-    '00000000-0000-0000-0000-000000000010',
     'Brumisateur Continu 360° Ultra-Fin',
     'brumisateur-continu-360',
     'accessoire',
@@ -41,7 +40,6 @@ VALUES
     10
 ),
 (
-    '00000000-0000-0000-0000-000000000011',
     'Flacons Applicateurs à Peigne Intégré (Trio)',
     'flacons-applicateurs-trio',
     'accessoire',
@@ -70,7 +68,6 @@ VALUES
     11
 ),
 (
-    '00000000-0000-0000-0000-000000000012',
     'Chouchous en Satin Protecteur (Assortiment)',
     'scrunchies-satin-assortis',
     'accessoire',
@@ -96,7 +93,6 @@ VALUES
     12
 ),
 (
-    '00000000-0000-0000-0000-000000000013',
     'Kit Coiffage Précision & Bordures',
     'kit-brosses-peignes-coiffage',
     'accessoire',
@@ -120,7 +116,6 @@ VALUES
     13
 ),
 (
-    '00000000-0000-0000-0000-000000000014',
     'Brosse Démêlante Ergonomique Ajourée',
     'brosse-demelante-ergonomique',
     'accessoire',
@@ -150,7 +145,6 @@ VALUES
     14
 ),
 (
-    '00000000-0000-0000-0000-000000000015',
     'Kit Coiffage Complet Violet & Pince Fleur (6 pièces)',
     'kit-accessoires-violet-fleur',
     'accessoire',
@@ -176,7 +170,6 @@ VALUES
     15
 ),
 (
-    '00000000-0000-0000-0000-000000000016',
     'Peigne Démêlant Dents Larges Spécial Afro',
     'peigne-demelant-dents-larges',
     'accessoire',
@@ -208,7 +201,6 @@ VALUES
     16
 ),
 (
-    '00000000-0000-0000-0000-000000000017',
     'Peigne Afro Volume (Afro Pick)',
     'peigne-afro-volume-pick',
     'accessoire',
@@ -235,7 +227,6 @@ VALUES
     17
 ),
 (
-    '00000000-0000-0000-0000-000000000018',
     'Ensemble Bandeaux & Chouchous en Satin Doux',
     'ensemble-bandeaux-chouchous-satin',
     'accessoire',
