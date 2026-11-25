@@ -4,6 +4,7 @@ import { Sparkles, Heart, MessageCircle, ArrowRight, ArrowDown } from 'lucide-re
 import { Link } from 'react-router-dom';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { buildWhatsAppInquiryUrl } from '@/lib/whatsapp';
+import { getSiteImage } from '@/lib/siteImages';
 import { Marquee } from '@/components/common/Marquee';
 import { SectionHeader } from '@/components/common/SectionHeader';
 
@@ -163,7 +164,7 @@ export const AboutPage: React.FC = () => {
                 {/* Main Visual Container */}
                 <div className="rounded-3xl overflow-hidden shadow-2xl border border-or/40 aspect-[4/5] bg-brun-nuit/10 relative group">
                   <img
-                    src="/products/lifestyle/gamme-complete-portrait-afro.jpg"
+                    src={getSiteImage(settings, 'aboutHero')}
                     alt="L'excellence des soins capillaires naturels DELAAFRO"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
@@ -197,7 +198,7 @@ export const AboutPage: React.FC = () => {
                 className="relative rounded-3xl overflow-hidden shadow-2xl border border-or/40 aspect-[4/5] bg-brun-nuit/5 group"
               >
                 <img
-                  src="/products/lifestyle/application-serum-sur-tresses.jpg"
+                  src={getSiteImage(settings, 'aboutCraft')}
                   alt="Application du soin précieux DELAAFRO Bénin"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
