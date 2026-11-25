@@ -13,6 +13,7 @@ import { useChat } from '@/hooks/useChat';
 import { MessageBubble } from './MessageBubble';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { buildWhatsAppInquiryUrl } from '@/lib/whatsapp';
+import { getSiteImage } from '@/lib/siteImages';
 
 interface ChatWindowProps {
   isOpen: boolean;
@@ -105,7 +106,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
             {/* Avatar rond de Dela avec pastille en ligne */}
             <div className="relative w-9 h-9 rounded-full overflow-hidden border border-[#C9A66B]/50 shrink-0 bg-[#2B1A12]">
               <img
-                src="/products/lifestyle/gamme-complete-portrait-afro.jpg"
+                src={getSiteImage(settings, 'chatbotAvatar')}
                 alt="Dela, conseillère DELAAFRO"
                 className="w-full h-full object-cover object-top"
               />
