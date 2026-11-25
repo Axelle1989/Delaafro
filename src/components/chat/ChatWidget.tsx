@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, Sparkles } from 'lucide-react';
 import { ChatWindow } from './ChatWindow';
+import { useSettingsStore } from '@/store/useSettingsStore';
+import { getSiteImage } from '@/lib/siteImages';
 
 export const ChatWidget: React.FC = () => {
+  const { settings } = useSettingsStore();
   const [isOpen, setIsOpen] = useState(false);
   const [hasPrompted, setHasPrompted] = useState(false);
 
@@ -59,7 +62,7 @@ export const ChatWidget: React.FC = () => {
             {/* Avatar miniature ou icône chat */}
             <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#C9A66B]/60">
               <img
-                src="/products/lifestyle/gamme-complete-portrait-afro.jpg"
+                src={getSiteImage(settings, 'chatbotAvatar')}
                 alt=""
                 className="w-full h-full object-cover object-top"
               />
