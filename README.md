@@ -118,12 +118,3 @@ Si aucune variable Supabase n'est présente dans `.env`, vous pouvez vous connec
    VITE_SUPABASE_URL=https://votre-projet.supabase.co
    VITE_SUPABASE_ANON_KEY=votre-cle-anon
    ```
-
----
-
-## 🌐 Déploiement sur Vercel
-
-1. Poussez votre code sur GitHub.
-2. Créez un nouveau projet sur [Vercel](https://vercel.com).
-3. Renseignez les variables d'environnement `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY`.
-4. Cliquez sur **Deploy**. Le build vérifiera automatiquement les images et compilera le bundle.
