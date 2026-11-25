@@ -129,12 +129,12 @@ VALUES
     2500,
     NULL,
     ARRAY[
-        '/products/accessoires/kits/kit-accessoires-rose.jpg',
+        '/products/accessoires/brosses-et-peignes/brosse-demelante-rose.jpg',
         '/products/accessoires/kits/kit-accessoires-violet.jpg',
         '/products/accessoires/kits/kit-accessoires-noir.jpg'
     ],
     '[
-        {"name": "Rose Douceur", "colorName": "Rose Douceur", "colorHex": "#EAA9BA", "image": "/products/accessoires/kits/kit-accessoires-rose.jpg", "inStock": true},
+        {"name": "Rose Douceur", "colorName": "Rose Douceur", "colorHex": "#EAA9BA", "image": "/products/accessoires/brosses-et-peignes/brosse-demelante-rose.jpg", "inStock": true},
         {"name": "Violet / Lilas", "colorName": "Violet / Lilas", "colorHex": "#9B72CF", "image": "/products/accessoires/kits/kit-accessoires-violet.jpg", "inStock": true},
         {"name": "Noir Ébène", "colorName": "Noir Ébène", "colorHex": "#1F1E1D", "image": "/products/accessoires/kits/kit-accessoires-noir.jpg", "inStock": true}
     ]'::jsonb,
