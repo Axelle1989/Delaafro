@@ -6,6 +6,7 @@ import { useSettingsStore } from '@/store/useSettingsStore';
 import { formatFCFA } from '@/lib/formatters';
 import { buildWhatsAppCartUrl } from '@/lib/whatsapp';
 import { getProductImage } from '@/lib/productImage';
+import { getSiteImage } from '@/lib/siteImages';
 import { Button } from '@/components/common/Button';
 import { Link } from 'react-router-dom';
 
@@ -180,7 +181,7 @@ export const CartDrawer: React.FC = () => {
                   <div className="bg-creme-light p-3.5 rounded-2xl border border-sable/60 mt-4 flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <img
-                        src="/products/packaging/sachet-cadeau-delaafro.jpg"
+                        src={getSiteImage(settings, 'giftWrapPhoto')}
                         alt="Sachet cadeau DELAAFRO"
                         className="w-12 h-12 rounded-xl object-cover border border-sable/50 shrink-0"
                       />
