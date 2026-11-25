@@ -13,6 +13,7 @@ import {
   Database,
   Sparkles,
   ShieldCheck,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { useAdminAuth } from '@/admin/context/AdminAuthContext';
 import { useSettingsStore } from '@/store/useSettingsStore';
@@ -37,6 +38,7 @@ export const AdminLayout: React.FC = () => {
     { name: 'Tableau de bord', path: '/admin', icon: <LayoutDashboard className="w-5 h-5" /> },
     { name: 'Produits', path: '/admin/produits', icon: <Package className="w-5 h-5" /> },
     { name: 'Nouveau Produit', path: '/admin/produits/nouveau', icon: <PlusCircle className="w-5 h-5" /> },
+    { name: 'Photos du Site', path: '/admin/photos', icon: <ImageIcon className="w-5 h-5" /> },
     { name: 'Témoignages', path: '/admin/temoignages', icon: <MessageSquare className="w-5 h-5" />, badge: pendingCount },
     { name: 'Réglages & WhatsApp', path: '/admin/reglages', icon: <Settings className="w-5 h-5" /> },
   ];
