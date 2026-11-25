@@ -52,7 +52,15 @@ function ScrollToTop() {
 
 // Protected Route Guard for Admin
 function ProtectedAdminRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useAdminAuth();
+  const { isAuthenticated, isAuthLoading } = useAdminAuth();
+
+  if (isAuthLoading) {
+    return (
+      <div className="min-h-screen bg-[#FDF9F5] flex items-center justify-center text-brun-nuit text-sm">
+        Vérification de la session administrateur...
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/admin/login" replace />;
