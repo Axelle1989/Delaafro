@@ -24,6 +24,7 @@ import { useCartStore } from '@/store/useCartStore';
 import { Button } from '@/components/common/Button';
 import { formatFCFA } from '@/lib/formatters';
 import { getProductImage } from '@/lib/productImage';
+import { getSiteImage } from '@/lib/siteImages';
 import { SectionHeader } from '@/components/common/SectionHeader';
 
 export const RoutinePage: React.FC = () => {
@@ -52,7 +53,7 @@ export const RoutinePage: React.FC = () => {
       action: 'Shampoing Doux',
       description:
         'Lavez votre cuir chevelu du bout des doigts sans frotter agressivement les longueurs. La mousse qui s’écoule suffit à emporter les impuretés tout en préservant le sébum indispensable.',
-      photo: '/products/soins/shampoing-doux/shampoing-doux-principale.jpg',
+      photo: getSiteImage(settings, 'routineStep1'),
       recommendedSlug: 'shampoing-doux',
       tip: 'Effectuez toujours votre lavage après avoir séparé vos cheveux en 4 sections pour éviter les nœuds.',
       icon: Droplets,
@@ -66,7 +67,7 @@ export const RoutinePage: React.FC = () => {
       action: 'Spray Hydratant Tonique',
       description:
         'Le cheveu crépu a une soif continue. Vaporisez une brume d’eau pure enrichie en gel d’aloe vera pour ouvrir la fibre et redonner souplesse et ressort à vos boucles.',
-      photo: '/products/soins/spray-hydratant/spray-hydratant-principale.jpg',
+      photo: getSiteImage(settings, 'routineStep2'),
       recommendedSlug: 'spray-hydratant',
       tip: 'Brumisez légèrement sans tremper vos cheveux avant chaque coiffage protecteur.',
       icon: Sparkles,
@@ -80,7 +81,7 @@ export const RoutinePage: React.FC = () => {
       action: 'Sérum Précieux & Baume',
       description:
         'Pour empêcher l’eau de s’évaporer, appliquez une noisette de baume sur les longueurs puis 3 à 5 gouttes de sérum sur le cuir chevelu et les pointes.',
-      photo: '/products/soins/serum-forte-porosite/serum-capillaire-principale.jpg',
+      photo: getSiteImage(settings, 'routineStep3'),
       recommendedSlug: 'serum-capillaire',
       tip: 'Si vous avez une forte porosité, le sérum est indispensable pour refermer les cuticules et garder l’eau.',
       icon: Feather,
@@ -94,7 +95,7 @@ export const RoutinePage: React.FC = () => {
       action: 'Satin & Outils Doux',
       description:
         'Remplacez le coton par du satin qui n’absorbe pas vos huiles. Utilisez des brosses ajourées souples qui cèdent devant les nœuds sans casser la fibre.',
-      photo: '/products/accessoires/scrunchies-et-pinces/scrunchies-satin-assortis.jpg',
+      photo: getSiteImage(settings, 'routineStep4'),
       recommendedSlug: 'kit-accessoires-complet',
       tip: 'Attachez vos cheveux en « ananas » haut avec un chouchou satin sans serrer avant de dormir.',
       icon: ShieldCheck,
