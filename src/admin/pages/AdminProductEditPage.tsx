@@ -13,13 +13,17 @@ import {
   CheckCircle2,
   AlertCircle,
   Eye,
+  Upload,
+  Loader2,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { Button } from '@/components/common/Button';
 import { ProductCard } from '@/components/product/ProductCard';
 import { Product, ProductCategory, ProductVariant } from '@/types';
 import { slugify } from '@/lib/formatters';
 import { PRODUCT_PLACEHOLDER } from '@/lib/productImage';
+import { uploadImageToStorage } from '@/lib/imageUpload';
 
 const productSchema = z.object({
   name: z.string().min(2, 'Le nom doit comporter au moins 2 caractères'),
@@ -54,6 +58,7 @@ export const AdminProductEditPage: React.FC = () => {
   const existingProduct = isNew ? undefined : products.find((p) => p.id === id);
 
   const [imageUrlInput, setImageUrlInput] = useState('');
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [benefitInput, setBenefitInput] = useState('');
   const [compositionInput, setCompositionInput] = useState('');
   const [variantsList, setVariantsList] = useState<ProductVariant[]>(
@@ -116,6 +121,24 @@ export const AdminProductEditPage: React.FC = () => {
       const current = watch('images') || [];
       setValue('images', [...current, imageUrlInput.trim()]);
       setImageUrlInput('');
+    }
+  };
+
+  const handleUploadProductImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+
+    setIsUploadingImage(true);
+    try {
+      const publicUrl = await uploadImageToStorage(file, 'products');
+      const current = watch('images') || [];
+      setValue('images', [...current, publicUrl]);
+      toast.success('Photo importée ! Cliquez sur Enregistrer pour publier.');
+    } catch (err: any) {
+      toast.error(err?.message || "Impossible d'importer l'image.");
+    } finally {
+      setIsUploadingImage(false);
     }
   };
 
@@ -509,16 +532,37 @@ export const AdminProductEditPage: React.FC = () => {
               Galerie Photos (URLs / Fichiers)
             </h3>
 
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
+              <label className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-terracotta text-white text-xs font-semibold cursor-pointer hover:bg-terracotta/90 transition-colors shrink-0">
+                {isUploadingImage ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>Envoi en cours...</span>
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>Importer une photo</span>
+                  </>
+                )}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/avif"
+                  onChange={handleUploadProductImage}
+                  disabled={isUploadingImage}
+                  className="hidden"
+                />
+              </label>
+
               <input
-                type="url"
+                type="text"
                 value={imageUrlInput}
                 onChange={(e) => setImageUrlInput(e.target.value)}
-                placeholder="https://... ou chemin /products/image.webp"
+                placeholder="Ou coller une URL https://... / chemin /products/..."
                 className="flex-1 text-xs px-3.5 py-2.5 rounded-xl border border-sable bg-creme/20 focus:outline-none focus:border-terracotta"
               />
               <Button type="button" variant="outline" size="sm" onClick={addImage}>
-                Ajouter l'image
+                Ajouter URL
               </Button>
             </div>
 
