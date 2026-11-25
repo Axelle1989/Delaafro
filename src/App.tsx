@@ -38,6 +38,7 @@ import { AdminProductsPage } from '@/admin/pages/AdminProductsPage';
 import { AdminProductEditPage } from '@/admin/pages/AdminProductEditPage';
 import { AdminTestimonialsPage } from '@/admin/pages/AdminTestimonialsPage';
 import { AdminSettingsPage } from '@/admin/pages/AdminSettingsPage';
+import { AdminMediaPage } from '@/admin/pages/AdminMediaPage';
 
 // Scroll To Top on route change
 function ScrollToTop() {
@@ -253,6 +254,7 @@ export function App() {
             <Route path="produits" element={<AdminProductsPage />} />
             <Route path="produits/nouveau" element={<AdminProductEditPage />} />
             <Route path="produits/:id" element={<AdminProductEditPage />} />
+            <Route path="photos" element={<AdminMediaPage />} />
             <Route path="temoignages" element={<AdminTestimonialsPage />} />
             <Route path="reglages" element={<AdminSettingsPage />} />
           </Route>
