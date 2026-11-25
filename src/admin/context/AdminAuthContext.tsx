@@ -3,6 +3,7 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 
 interface AdminAuthContextType {
   isAuthenticated: boolean;
+  isAuthLoading: boolean;
   userEmail: string | null;
   login: (email: string, pass: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
@@ -12,14 +13,17 @@ interface AdminAuthContextType {
 const AdminAuthContext = createContext<AdminAuthContextType | undefined>(undefined);
 
 export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const isDemoMode = !isSupabaseConfigured;
+
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    if (isSupabaseConfigured) return false;
     return localStorage.getItem('delaafro_admin_auth') === 'true';
   });
+  const [isAuthLoading, setIsAuthLoading] = useState<boolean>(isSupabaseConfigured);
   const [userEmail, setUserEmail] = useState<string | null>(() => {
+    if (isSupabaseConfigured) return null;
     return localStorage.getItem('delaafro_admin_email') || null;
   });
-
-  const isDemoMode = !isSupabaseConfigured;
 
   useEffect(() => {
     if (isSupabaseConfigured && supabase) {
@@ -29,7 +33,13 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           setUserEmail(session.user.email || null);
           localStorage.setItem('delaafro_admin_auth', 'true');
           if (session.user.email) localStorage.setItem('delaafro_admin_email', session.user.email);
+        } else {
+          setIsAuthenticated(false);
+          setUserEmail(null);
+          localStorage.removeItem('delaafro_admin_auth');
+          localStorage.removeItem('delaafro_admin_email');
         }
+        setIsAuthLoading(false);
       });
 
       const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -44,6 +54,7 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           localStorage.removeItem('delaafro_admin_auth');
           localStorage.removeItem('delaafro_admin_email');
         }
+        setIsAuthLoading(false);
       });
 
       return () => {
@@ -109,6 +120,7 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     <AdminAuthContext.Provider
       value={{
         isAuthenticated,
+        isAuthLoading,
         userEmail,
         login,
         logout,
