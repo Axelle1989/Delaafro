@@ -352,10 +352,13 @@ export const INITIAL_PRODUCTS: Product[] = [
     usageInstructions: 'Verser l’huile ou la lotion dans le flacon, visser le peigne et presser délicatement en traçant des raies.',
     price: 3000,
     images: [
+      '/products/accessoires/flacons-applicateurs/flacons-applicateurs-peigne-trio.jpg',
       '/products/accessoires/flacons-applicateurs/flacons-applicateurs-trio-couleurs.jpg'
     ],
     variants: [
-      { name: 'Trio Couleurs (Bleu, Rose, Violet)', colorName: 'Trio', colorHex: '#5E7A4A', image: '/products/accessoires/flacons-applicateurs/flacons-applicateurs-trio-couleurs.jpg', inStock: true }
+      { name: 'Bleu Ciel', colorName: 'Bleu', colorHex: '#2596BE', image: '/products/accessoires/flacons-applicateurs/flacons-applicateurs-peigne-trio.jpg', inStock: true },
+      { name: 'Rose Fuchsia', colorName: 'Rose', colorHex: '#FF1493', image: '/products/accessoires/flacons-applicateurs/flacons-applicateurs-peigne-trio.jpg', inStock: true },
+      { name: 'Violet Royal', colorName: 'Violet', colorHex: '#8E44AD', image: '/products/accessoires/flacons-applicateurs/flacons-applicateurs-peigne-trio.jpg', inStock: true }
     ],
     isFeatured: true,
     isPublished: true,
@@ -433,6 +436,137 @@ export const INITIAL_PRODUCTS: Product[] = [
     isPublished: true,
     inStock: true,
     displayOrder: 15,
+  },
+  {
+    id: 'kit-accessoires-violet-fleur',
+    name: 'Kit Coiffage Complet Violet & Pince Fleur (6 pièces)',
+    slug: 'kit-accessoires-violet-fleur',
+    category: 'accessoire',
+    categoryLabel: 'Kit Coiffage Violet',
+    subtitle: 'Brumisateur 360°, brosse démêlante souple, brosse plate, brosse baby hair, peigne à queue & pince fleur',
+    shortDescription: 'Coffret complet assorti en violet lilas : tout le nécessaire pour hydrater, démêler sans casse, tracer et fixer vos coiffures afro.',
+    longDescription: 'Ce kit 6 pièces harmonisé réunit nos outils les plus demandés : un brumisateur continu 360° violet, une brosse démêlante souple ajourée, une brosse plate lissante, une brosse double face spéciale bordures (baby hair), un peigne à queue métallique et une pince fleur maintien doux.',
+    composition: [
+      'Brumisateur continu 360° violet dégradé',
+      'Brosse démêlante souple ajourée violette',
+      'Brosse plate anti-statique',
+      'Brosse double face bordures & baby hair',
+      'Peigne à queue fine tige métallique',
+      'Grande pince fleur violette maintien doux'
+    ],
+    benefits: [
+      'Set 6 pièces assorti prêt à l’emploi',
+      'Démêlage doux et brumisation homogène',
+      'Idéal pour les wash days et coiffures protectrices'
+    ],
+    usageInstructions: 'Humidifier les longueurs avec le brumisateur 360°, séparer avec la pince fleur et le peigne à queue, puis démêler en douceur des pointes vers les racines.',
+    price: 7500,
+    originalPrice: 9000,
+    images: [
+      '/products/accessoires/kits/kit-coiffage-complet-violet-pince.jpg'
+    ],
+    variants: [
+      { name: 'Violet Lilas & Fleur', colorName: 'Violet', colorHex: '#9B72CF', image: '/products/accessoires/kits/kit-coiffage-complet-violet-pince.jpg', inStock: true }
+    ],
+    badge: 'Nouveau',
+    isFeatured: true,
+    isPublished: true,
+    inStock: true,
+    displayOrder: 16,
+  },
+  {
+    id: 'peigne-demelant-dents-larges',
+    name: 'Peigne Démêlant Dents Larges Spécial Afro',
+    slug: 'peigne-demelant-dents-larges',
+    category: 'accessoire',
+    categoryLabel: 'Démêlage Sans Casse',
+    subtitle: 'Dents larges arrondies qui glissent sur les boucles et cheveux crépus 4A–4C',
+    shortDescription: 'Peigne robuste à dents larges espacées pour démêler sous la douche ou sur cheveux hydratés sans tirer ni casser la fibre.',
+    longDescription: 'Indispensable de toute routine afro, ce peigne à dents larges limite les frottements mécaniques et préserve la définition naturelle de vos boucles. Disponible en plusieurs teintes vibrantes et classiques.',
+    benefits: [
+      'Dents larges lisses anti-accrochage',
+      'Réduit la casse lors du wash day',
+      'Manche ergonomique ou format poche au choix'
+    ],
+    usageInstructions: 'Toujours démêler par sections sur cheveux humidifiés avec le spray ou le leave-in, en commençant par les pointes.',
+    price: 1500,
+    images: [
+      '/products/accessoires/brosses-et-peignes/peignes-demelants-dents-larges-duo.jpg',
+      '/products/accessoires/brosses-et-peignes/peignes-dents-larges-multicolores.jpg'
+    ],
+    variants: [
+      { name: 'Noir Classique', colorName: 'Noir', colorHex: '#1F1E1D', image: '/products/accessoires/brosses-et-peignes/peignes-demelants-dents-larges-duo.jpg', inStock: true },
+      { name: 'Rose Fuchsia', colorName: 'Rose', colorHex: '#E91E8C', image: '/products/accessoires/brosses-et-peignes/peignes-demelants-dents-larges-duo.jpg', inStock: true },
+      { name: 'Turquoise / Menthe', colorName: 'Turquoise', colorHex: '#48C9B0', image: '/products/accessoires/brosses-et-peignes/peignes-dents-larges-multicolores.jpg', inStock: true },
+      { name: 'Violet Lilas', colorName: 'Violet', colorHex: '#9B72CF', image: '/products/accessoires/brosses-et-peignes/peignes-dents-larges-multicolores.jpg', inStock: true },
+      { name: 'Jaune Soleil', colorName: 'Jaune', colorHex: '#F4D03F', image: '/products/accessoires/brosses-et-peignes/peignes-dents-larges-multicolores.jpg', inStock: true },
+      { name: 'Rose Pastel', colorName: 'Rose Pastel', colorHex: '#F7A8C8', image: '/products/accessoires/brosses-et-peignes/peignes-dents-larges-multicolores.jpg', inStock: true }
+    ],
+    badge: 'Nouveau',
+    isFeatured: true,
+    isPublished: true,
+    inStock: true,
+    displayOrder: 17,
+  },
+  {
+    id: 'peigne-afro-volume-pick',
+    name: 'Peigne Afro Volume (Afro Pick)',
+    slug: 'peigne-afro-volume-pick',
+    category: 'accessoire',
+    categoryLabel: 'Volume & Mise en Forme',
+    subtitle: 'Dents longues spéciales pour soulever les racines et sculpter un afro majestueux',
+    shortDescription: 'Le peigne afro iconique pour décoller les racines et donner du volume instantané à votre couronne sans défaire vos boucles.',
+    longDescription: 'Conçu pour épouser la densité des cheveux crépus et frisés, cet Afro Pick soulève délicatement la base du cheveu afin d’apporter rondeur, hauteur et harmonie à votre afro en quelques gestes.',
+    benefits: [
+      'Apporte un volume immédiat dès la racine',
+      'Respecte la forme des boucles aux pointes',
+      'Léger, solide et facile à glisser dans un sac'
+    ],
+    usageInstructions: 'Insérer le peigne à la racine et soulever délicatement vers le haut sans tirer jusqu’aux pointes.',
+    price: 1500,
+    images: [
+      '/products/accessoires/brosses-et-peignes/peigne-afro-volume-pick.jpg'
+    ],
+    variants: [
+      { name: 'Noir Ébène', colorName: 'Noir', colorHex: '#1F1E1D', image: '/products/accessoires/brosses-et-peignes/peigne-afro-volume-pick.jpg', inStock: true },
+      { name: 'Rose Doux', colorName: 'Rose', colorHex: '#F4A3B8', image: '/products/accessoires/brosses-et-peignes/peigne-afro-volume-pick.jpg', inStock: true }
+    ],
+    badge: 'Coup de Cœur',
+    isFeatured: true,
+    isPublished: true,
+    inStock: true,
+    displayOrder: 18,
+  },
+  {
+    id: 'ensemble-bandeaux-chouchous-satin',
+    name: 'Ensemble Bandeaux & Chouchous en Satin Doux',
+    slug: 'ensemble-bandeaux-chouchous-satin',
+    category: 'accessoire',
+    categoryLabel: 'Satin & Élégance',
+    subtitle: 'Bandeaux larges et chouchous satinés aux teintes neutres & chocolat',
+    shortDescription: 'Collection chic de bandeaux souples et chouchous en satin (Noir, Chocolat, Caramel, Crème, Blanc) pour protéger vos bordures avec style.',
+    longDescription: 'Alliez protection capillaire et élégance au quotidien. Nos bandeaux larges maintiennent les cheveux sans comprimer les tempes, tandis que les chouchous en satin glissent sur la fibre sans jamais provoquer de casse.',
+    benefits: [
+      'Protège les bordures et les tempes sans tension',
+      'Satin doux qui n’absorbe pas l’hydratation',
+      'Teintes neutres faciles à assortir à toutes vos tenues'
+    ],
+    usageInstructions: 'Porter le bandeau pour dégager le visage avec élégance ou fixer vos bordures après application du soin, et utiliser les chouchous pour vos chignons et coiffures de nuit.',
+    price: 2500,
+    images: [
+      '/products/accessoires/scrunchies-et-pinces/ensemble-bandeaux-chouchous-satin.jpg'
+    ],
+    variants: [
+      { name: 'Noir Ébène', colorName: 'Noir', colorHex: '#1A1A1A', image: '/products/accessoires/scrunchies-et-pinces/ensemble-bandeaux-chouchous-satin.jpg', inStock: true },
+      { name: 'Chocolat Intense', colorName: 'Chocolat', colorHex: '#4A2C1D', image: '/products/accessoires/scrunchies-et-pinces/ensemble-bandeaux-chouchous-satin.jpg', inStock: true },
+      { name: 'Caramel Doré', colorName: 'Caramel', colorHex: '#B67B43', image: '/products/accessoires/scrunchies-et-pinces/ensemble-bandeaux-chouchous-satin.jpg', inStock: true },
+      { name: 'Crème & Blanc Perle', colorName: 'Crème', colorHex: '#F3E8DC', image: '/products/accessoires/scrunchies-et-pinces/ensemble-bandeaux-chouchous-satin.jpg', inStock: true }
+    ],
+    badge: 'Nouveau',
+    isFeatured: true,
+    isPublished: true,
+    inStock: true,
+    displayOrder: 19,
   }
 ];
 
