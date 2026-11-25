@@ -2,18 +2,23 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, X, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 import { SectionHeader } from '@/components/common/SectionHeader';
+import { useSettingsStore } from '@/store/useSettingsStore';
+import { getSiteImage } from '@/lib/siteImages';
+import { SiteImages } from '@/types';
 
 interface GalleryItem {
   id: string;
+  imageKey: keyof SiteImages;
   src: string;
   title: string;
   description: string;
   tag: string;
 }
 
-const GALLERY_ITEMS: GalleryItem[] = [
+const BASE_GALLERY_ITEMS: GalleryItem[] = [
   {
     id: '1',
+    imageKey: 'careInAction1',
     src: '/products/lifestyle/application-serum-sur-tresses.jpg',
     title: 'Nutrition en profondeur',
     description: 'Application ciblée du sérum fortifiant sur nattes et tresses protectrices.',
@@ -21,6 +26,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: '2',
+    imageKey: 'careInAction2',
     src: '/products/lifestyle/gamme-complete-portrait-afro.jpg',
     title: 'La Gamme Complète DELAAFRO',
     description: 'L’élégance d’une routine naturelle conçue pour sublimer la texture crépue.',
@@ -28,6 +34,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: '3',
+    imageKey: 'careInAction3',
     src: '/products/soins/serum-forte-porosite/serum-application-nattes-vue-dessus.jpg',
     title: 'Sérum Forte Porosité',
     description: 'Comble les cuticules ouvertes et scelle l’hydratation au cœur du cheveu.',
@@ -36,6 +43,11 @@ const GALLERY_ITEMS: GalleryItem[] = [
 ];
 
 export const CareInActionSection: React.FC = () => {
+  const { settings } = useSettingsStore();
+  const GALLERY_ITEMS = BASE_GALLERY_ITEMS.map((item) => ({
+    ...item,
+    src: getSiteImage(settings, item.imageKey),
+  }));
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const handleNext = useCallback(() => {
