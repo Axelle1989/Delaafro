@@ -66,6 +66,24 @@ export interface Testimonial {
   createdAt: string;
 }
 
+export interface SiteImages {
+  heroSlide1: string;
+  heroSlide2: string;
+  heroSlide3: string;
+  careInAction1: string;
+  careInAction2: string;
+  careInAction3: string;
+  rangesBanner: string;
+  aboutHero: string;
+  aboutCraft: string;
+  routineStep1: string;
+  routineStep2: string;
+  routineStep3: string;
+  routineStep4: string;
+  giftWrapPhoto: string;
+  chatbotAvatar: string;
+}
+
 export interface SiteSettings {
   whatsappNumber: string; // e.g. "22945483473"
   whatsappDisplayNumber: string; // "+229 45 48 34 73"
@@ -82,5 +100,6 @@ export interface SiteSettings {
   openingHours: string;
   giftWrapPrice?: number;
   giftWrapEnabled?: boolean;
+  siteImages?: Partial<SiteImages>;
 }
 
