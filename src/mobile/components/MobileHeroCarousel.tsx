@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { Sparkles, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useSettingsStore } from '@/store/useSettingsStore';
 
 interface MobileSlide {
   id: string;
@@ -56,6 +57,7 @@ const MOBILE_SLIDES: MobileSlide[] = [
 ];
 
 export const MobileHeroCarousel: React.FC = () => {
+  const { settings } = useSettingsStore();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTouched, setIsTouched] = useState(false);
 
@@ -77,7 +79,12 @@ export const MobileHeroCarousel: React.FC = () => {
     }
   };
 
-  const slide = MOBILE_SLIDES[currentSlide];
+  const baseSlide = MOBILE_SLIDES[currentSlide];
+  const heroKeys = ['heroSlide1', 'heroSlide2', 'heroSlide3'] as const;
+  const customHeroUrl = settings.siteImages?.[heroKeys[currentSlide]];
+  const slide = customHeroUrl
+    ? { ...baseSlide, image: customHeroUrl, image800: customHeroUrl }
+    : baseSlide;
 
   return (
     <section
