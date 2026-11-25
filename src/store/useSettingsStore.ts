@@ -1,8 +1,36 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { toast } from 'sonner';
 import { Product, Testimonial, SiteSettings } from '@/types';
 import { INITIAL_PRODUCTS, INITIAL_SETTINGS, INITIAL_TESTIMONIALS } from '@/lib/demoData';
 import { isSupabaseConfigured, supabase } from '@/lib/supabase';
+
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function generateUUID(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+function isUUID(val: string | undefined): boolean {
+  return Boolean(val && UUID_REGEX.test(val));
+}
+
+function sanitizeOriginalPrice(originalPrice: number | undefined, price?: number): number | null {
+  if (originalPrice === undefined || originalPrice === null || !Number.isFinite(originalPrice) || originalPrice <= 0) {
+    return null;
+  }
+  if (price !== undefined && originalPrice < price) {
+    return null;
+  }
+  return originalPrice;
+}
 
 interface SiteStoreState {
   settings: SiteSettings;
@@ -45,13 +73,22 @@ export const useSettingsStore = create<SiteStoreState>()(
 
         if (isSupabaseConfigured && supabase) {
           try {
-            await supabase.from('settings').upsert({
-              key: 'main',
-              value: get().settings,
-              updated_at: new Date().toISOString(),
-            });
-          } catch (err) {
+            const { error } = await supabase.from('settings').upsert(
+              {
+                key: 'main',
+                value: get().settings,
+                updated_at: new Date().toISOString(),
+              },
+              { onConflict: 'key' }
+            );
+            if (error) {
+              console.error('Failed to sync settings with Supabase:', error);
+              toast.error(`Sauvegarde des réglages refusée : ${error.message}`);
+              await get().fetchFromBackend();
+            }
+          } catch (err: any) {
             console.error('Failed to sync settings with Supabase:', err);
+            toast.error(`Erreur réseau lors de la sauvegarde des réglages : ${err?.message || 'inconnue'}`);
           }
         }
       },
@@ -59,7 +96,7 @@ export const useSettingsStore = create<SiteStoreState>()(
       setProducts: (products) => set({ products }),
 
       addProduct: async (productData) => {
-        const id = `prod-${Date.now()}`;
+        const id = generateUUID();
         const newProduct: Product = {
           ...productData,
           id,
@@ -72,32 +109,38 @@ export const useSettingsStore = create<SiteStoreState>()(
 
         if (isSupabaseConfigured && supabase) {
           try {
-            await supabase.from('products').insert([
+            const { error } = await supabase.from('products').insert([
               {
                 id: newProduct.id,
                 name: newProduct.name,
                 slug: newProduct.slug,
                 category: newProduct.category,
-                category_label: newProduct.categoryLabel,
-                subtitle: newProduct.subtitle,
+                category_label: newProduct.categoryLabel || null,
+                subtitle: newProduct.subtitle || null,
                 short_description: newProduct.shortDescription,
                 long_description: newProduct.longDescription,
-                composition: newProduct.composition,
-                benefits: newProduct.benefits,
-                usage_instructions: newProduct.usageInstructions,
+                composition: newProduct.composition || [],
+                benefits: newProduct.benefits || [],
+                usage_instructions: newProduct.usageInstructions || null,
                 price: newProduct.price,
-                original_price: newProduct.originalPrice,
-                images: newProduct.images,
-                variants: newProduct.variants,
-                badge: newProduct.badge,
+                original_price: sanitizeOriginalPrice(newProduct.originalPrice, newProduct.price),
+                images: newProduct.images || [],
+                variants: newProduct.variants || [],
+                badge: newProduct.badge || null,
                 is_featured: newProduct.isFeatured,
                 is_published: newProduct.isPublished,
                 in_stock: newProduct.inStock,
                 display_order: newProduct.displayOrder,
               },
             ]);
-          } catch (err) {
+            if (error) {
+              console.error('Failed to insert product in Supabase:', error);
+              toast.error(`Impossible d'enregistrer le produit : ${error.message}`);
+              await get().fetchFromBackend();
+            }
+          } catch (err: any) {
             console.error('Failed to insert product in Supabase:', err);
+            toast.error(`Erreur réseau lors de l'ajout du produit : ${err?.message || 'inconnue'}`);
           }
         }
 
@@ -105,20 +148,25 @@ export const useSettingsStore = create<SiteStoreState>()(
       },
 
       updateProduct: async (id, updates) => {
+        const existing = get().products.find((p) => p.id === id);
+
         set((state) => ({
           products: state.products.map((p) => (p.id === id ? { ...p, ...updates } : p)),
         }));
 
         if (isSupabaseConfigured && supabase) {
           try {
+            const effectivePrice = updates.price ?? existing?.price;
             const dbUpdates: Record<string, any> = {};
             if (updates.name !== undefined) dbUpdates.name = updates.name;
             if (updates.slug !== undefined) dbUpdates.slug = updates.slug;
             if (updates.category !== undefined) dbUpdates.category = updates.category;
-            if (updates.categoryLabel !== undefined) dbUpdates.category_label = updates.categoryLabel;
-            if (updates.subtitle !== undefined) dbUpdates.subtitle = updates.subtitle;
+            if (updates.categoryLabel !== undefined) dbUpdates.category_label = updates.categoryLabel || null;
+            if (updates.subtitle !== undefined) dbUpdates.subtitle = updates.subtitle || null;
             if (updates.price !== undefined) dbUpdates.price = updates.price;
-            if (updates.originalPrice !== undefined) dbUpdates.original_price = updates.originalPrice;
+            if ('originalPrice' in updates) {
+              dbUpdates.original_price = sanitizeOriginalPrice(updates.originalPrice, effectivePrice);
+            }
             if (updates.isFeatured !== undefined) dbUpdates.is_featured = updates.isFeatured;
             if (updates.isPublished !== undefined) dbUpdates.is_published = updates.isPublished;
             if (updates.inStock !== undefined) dbUpdates.in_stock = updates.inStock;
@@ -126,51 +174,95 @@ export const useSettingsStore = create<SiteStoreState>()(
             if (updates.longDescription !== undefined) dbUpdates.long_description = updates.longDescription;
             if (updates.composition !== undefined) dbUpdates.composition = updates.composition;
             if (updates.benefits !== undefined) dbUpdates.benefits = updates.benefits;
-            if (updates.usageInstructions !== undefined) dbUpdates.usage_instructions = updates.usageInstructions;
+            if (updates.usageInstructions !== undefined) dbUpdates.usage_instructions = updates.usageInstructions || null;
             if (updates.images !== undefined) dbUpdates.images = updates.images;
-            if (updates.variants !== undefined) dbUpdates.variants = updates.variants;
-            if (updates.badge !== undefined) dbUpdates.badge = updates.badge;
+            if (updates.variants !== undefined) dbUpdates.variants = updates.variants || [];
+            if ('badge' in updates) dbUpdates.badge = updates.badge || null;
             if (updates.displayOrder !== undefined) dbUpdates.display_order = updates.displayOrder;
 
-            await supabase.from('products').update(dbUpdates).eq('id', id);
-          } catch (err) {
+            const query = supabase.from('products').update(dbUpdates);
+            const { error } = isUUID(id)
+              ? await query.eq('id', id)
+              : await query.eq('slug', existing?.slug || id);
+
+            if (error) {
+              console.error('Failed to update product in Supabase:', error);
+              toast.error(`Modification non enregistrée dans Supabase : ${error.message}`);
+              await get().fetchFromBackend();
+            }
+          } catch (err: any) {
             console.error('Failed to update product in Supabase:', err);
+            toast.error(`Erreur réseau lors de la modification : ${err?.message || 'inconnue'}`);
           }
         }
       },
 
       deleteProduct: async (id) => {
+        const existing = get().products.find((p) => p.id === id);
+
         set((state) => ({
           products: state.products.filter((p) => p.id !== id),
         }));
 
         if (isSupabaseConfigured && supabase) {
           try {
-            await supabase.from('products').delete().eq('id', id);
-          } catch (err) {
+            const query = supabase.from('products').delete();
+            const { error } = isUUID(id)
+              ? await query.eq('id', id)
+              : await query.eq('slug', existing?.slug || id);
+
+            if (error) {
+              console.error('Failed to delete product in Supabase:', error);
+              toast.error(`Suppression refusée par Supabase : ${error.message}`);
+              await get().fetchFromBackend();
+            }
+          } catch (err: any) {
             console.error('Failed to delete product in Supabase:', err);
+            toast.error(`Erreur réseau lors de la suppression : ${err?.message || 'inconnue'}`);
           }
         }
       },
 
       reorderProducts: async (orderedIds: string[]) => {
+        let reorderedList: Product[] = [];
         set((state) => {
           const map = new Map<string, Product>(state.products.map((p) => [p.id, p]));
           const reordered: Product[] = [];
           orderedIds.forEach((id: string, index: number) => {
             const prod = map.get(id);
             if (prod) {
-              reordered.push({ ...prod, displayOrder: index });
+              reordered.push({ ...prod, displayOrder: index + 1 });
               map.delete(id);
             }
           });
           map.forEach((prod) => reordered.push(prod));
+          reorderedList = reordered;
           return { products: reordered };
         });
+
+        if (isSupabaseConfigured && supabase && reorderedList.length > 0) {
+          try {
+            const results = await Promise.all(
+              reorderedList.map((prod) => {
+                const query = supabase!.from('products').update({ display_order: prod.displayOrder });
+                return isUUID(prod.id) ? query.eq('id', prod.id) : query.eq('slug', prod.slug);
+              })
+            );
+            const firstErr = results.find((r) => r.error)?.error;
+            if (firstErr) {
+              console.error('Failed to reorder products in Supabase:', firstErr);
+              toast.error(`Ordre non sauvegardé dans Supabase : ${firstErr.message}`);
+              await get().fetchFromBackend();
+            }
+          } catch (err: any) {
+            console.error('Failed to reorder products in Supabase:', err);
+            toast.error(`Erreur réseau lors du réordonnancement : ${err?.message || 'inconnue'}`);
+          }
+        }
       },
 
       addTestimonial: async (testimonialData) => {
-        const id = `testi-${Date.now()}`;
+        const id = generateUUID();
         const newTestimonial: Testimonial = {
           ...testimonialData,
           id,
@@ -183,30 +275,35 @@ export const useSettingsStore = create<SiteStoreState>()(
 
         if (isSupabaseConfigured && supabase) {
           try {
-            await supabase.from('testimonials').insert([
+            const { error } = await supabase.from('testimonials').insert([
               {
                 id: newTestimonial.id,
                 client_name: newTestimonial.clientName,
                 city: newTestimonial.city,
                 rating: newTestimonial.rating,
                 content: newTestimonial.content,
-                product_name: newTestimonial.productName,
-                product_id: newTestimonial.productId,
-                avatar_url: newTestimonial.avatarUrl,
-                photo_url: newTestimonial.photoUrl,
-                hair_type: newTestimonial.hairType,
-                usage_duration: newTestimonial.usageDuration,
-                video_url: newTestimonial.videoUrl,
-                video_poster_url: newTestimonial.videoPosterUrl,
-                video_source: newTestimonial.videoSource,
-                video_duration: newTestimonial.videoDuration,
+                product_name: newTestimonial.productName || null,
+                avatar_url: newTestimonial.avatarUrl || null,
+                photo_url: newTestimonial.photoUrl || null,
+                hair_type: newTestimonial.hairType || null,
+                usage_duration: newTestimonial.usageDuration || null,
+                video_url: newTestimonial.videoUrl || null,
+                video_poster_url: newTestimonial.videoPosterUrl || null,
+                video_source: newTestimonial.videoSource || null,
+                video_duration: newTestimonial.videoDuration || null,
                 status: newTestimonial.status || 'approved',
                 is_visible: newTestimonial.isVisible,
-                is_demo: newTestimonial.isDemo,
+                is_demo: newTestimonial.isDemo ?? false,
               },
             ]);
-          } catch (err) {
+            if (error) {
+              console.error('Failed to insert testimonial in Supabase:', error);
+              toast.error(`Témoignage non enregistré : ${error.message}`);
+              await get().fetchFromBackend();
+            }
+          } catch (err: any) {
             console.error('Failed to insert testimonial in Supabase:', err);
+            toast.error(`Erreur réseau lors de l'ajout du témoignage : ${err?.message || 'inconnue'}`);
           }
         }
 
@@ -227,25 +324,31 @@ export const useSettingsStore = create<SiteStoreState>()(
             if (updates.city !== undefined) dbUpdates.city = updates.city;
             if (updates.rating !== undefined) dbUpdates.rating = updates.rating;
             if (updates.content !== undefined) dbUpdates.content = updates.content;
-            if (updates.productName !== undefined) dbUpdates.product_name = updates.productName;
-            if (updates.productId !== undefined) dbUpdates.product_id = updates.productId;
-            if (updates.avatarUrl !== undefined) dbUpdates.avatar_url = updates.avatarUrl;
-            if (updates.photoUrl !== undefined) dbUpdates.photo_url = updates.photoUrl;
-            if (updates.hairType !== undefined) dbUpdates.hair_type = updates.hairType;
-            if (updates.usageDuration !== undefined) dbUpdates.usage_duration = updates.usageDuration;
-            if (updates.videoUrl !== undefined) dbUpdates.video_url = updates.videoUrl;
-            if (updates.videoPosterUrl !== undefined) dbUpdates.video_poster_url = updates.videoPosterUrl;
-            if (updates.videoSource !== undefined) dbUpdates.video_source = updates.videoSource;
-            if (updates.videoDuration !== undefined) dbUpdates.video_duration = updates.videoDuration;
+            if (updates.productName !== undefined) dbUpdates.product_name = updates.productName || null;
+            if (updates.avatarUrl !== undefined) dbUpdates.avatar_url = updates.avatarUrl || null;
+            if (updates.photoUrl !== undefined) dbUpdates.photo_url = updates.photoUrl || null;
+            if (updates.hairType !== undefined) dbUpdates.hair_type = updates.hairType || null;
+            if (updates.usageDuration !== undefined) dbUpdates.usage_duration = updates.usageDuration || null;
+            if (updates.videoUrl !== undefined) dbUpdates.video_url = updates.videoUrl || null;
+            if (updates.videoPosterUrl !== undefined) dbUpdates.video_poster_url = updates.videoPosterUrl || null;
+            if (updates.videoSource !== undefined) dbUpdates.video_source = updates.videoSource || null;
+            if (updates.videoDuration !== undefined) dbUpdates.video_duration = updates.videoDuration || null;
             if (updates.status !== undefined) dbUpdates.status = updates.status;
             if (updates.isVisible !== undefined) dbUpdates.is_visible = updates.isVisible;
 
-            await supabase
+            const { error } = await supabase
               .from('testimonials')
               .update(dbUpdates)
               .eq('id', id);
-          } catch (err) {
+
+            if (error) {
+              console.error('Failed to update testimonial in Supabase:', error);
+              toast.error(`Modification du témoignage refusée : ${error.message}`);
+              await get().fetchFromBackend();
+            }
+          } catch (err: any) {
             console.error('Failed to update testimonial in Supabase:', err);
+            toast.error(`Erreur réseau lors de la modification du témoignage : ${err?.message || 'inconnue'}`);
           }
         }
       },
@@ -257,9 +360,15 @@ export const useSettingsStore = create<SiteStoreState>()(
 
         if (isSupabaseConfigured && supabase) {
           try {
-            await supabase.from('testimonials').delete().eq('id', id);
-          } catch (err) {
+            const { error } = await supabase.from('testimonials').delete().eq('id', id);
+            if (error) {
+              console.error('Failed to delete testimonial in Supabase:', error);
+              toast.error(`Suppression du témoignage refusée : ${error.message}`);
+              await get().fetchFromBackend();
+            }
+          } catch (err: any) {
             console.error('Failed to delete testimonial in Supabase:', err);
+            toast.error(`Erreur réseau lors de la suppression : ${err?.message || 'inconnue'}`);
           }
         }
       },
@@ -299,6 +408,7 @@ export const useSettingsStore = create<SiteStoreState>()(
               name: row.name,
               slug: row.slug,
               category: row.category,
+              categoryLabel: row.category_label,
               subtitle: row.subtitle,
               shortDescription: row.short_description || '',
               longDescription: row.long_description || '',
