@@ -10,6 +10,7 @@ import {
 import { Sparkles, ArrowRight, MessageCircle } from 'lucide-react';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { buildWhatsAppInquiryUrl } from '@/lib/whatsapp';
+import { getSiteImage } from '@/lib/siteImages';
 
 interface RangePriceItem {
   name: string;
@@ -225,7 +226,7 @@ export const LivingPosterBanner: React.FC = () => {
               <div className="relative aspect-square w-full rounded-[22px] overflow-hidden bg-[#F8EBDD]">
                 <motion.img
                   key={revealKey}
-                  src="/products/gammes/gammes-affiche-4-gammes.jpg"
+                  src={getSiteImage(settings, 'rangesBanner')}
                   alt="Les quatre gammes DELAAFRO : Essentielle, Hydratation, Complète et Locksés"
                   initial={
                     prefersReducedMotion || revealKey === 0
