@@ -144,7 +144,12 @@ export const HeroSection: React.FC = () => {
     }
   };
 
-  const slide = heroSlides[currentSlide];
+  const baseSlide = heroSlides[currentSlide];
+  const heroKeys = ['heroSlide1', 'heroSlide2', 'heroSlide3'] as const;
+  const customHeroUrl = settings.siteImages?.[heroKeys[currentSlide]];
+  const slide = customHeroUrl
+    ? { ...baseSlide, image: customHeroUrl, imageMobile: customHeroUrl }
+    : baseSlide;
   const whatsAppUrl = buildWhatsAppInquiryUrl(undefined, settings.whatsappNumber);
 
   return (
