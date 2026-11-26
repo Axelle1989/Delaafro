@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Star, Upload, CheckCircle, AlertCircle } from 'lucide-react';
 import { useSettingsStore } from '@/store/useSettingsStore';
+import { useI18n } from '@/context/I18nContext';
 import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/common/Button';
 
@@ -12,14 +13,14 @@ interface ReviewModalProps {
 
 export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
   const { products, addTestimonial } = useSettingsStore();
+  const { t, translateProductName } = useI18n();
 
-  const [clientName, setClientName] = useState('');
   const [city, setCity] = useState('');
   const [productId, setProductId] = useState('');
   const [rating, setRating] = useState(5);
   const [content, setContent] = useState('');
   const [file, setFile] = useState<File | null>(null);
-  const [honeypot, setHoneypot] = useState(''); // Anti-spam hidden field
+  const [honeypot, setHoneypot] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,22 +29,20 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => 
     e.preventDefault();
     setError(null);
 
-    // 1. Anti-spam honeypot
     if (honeypot.trim() !== '') {
       setIsSuccess(true);
       return;
     }
 
-    // 2. Rate limiting (1 submission per minute)
     const lastSubmit = localStorage.getItem('delaafro_last_review_ts');
     const now = Date.now();
     if (lastSubmit && now - parseInt(lastSubmit, 10) < 60000) {
-      setError('Veuillez patienter 1 minute avant de soumettre un nouvel avis.');
+      setError(t('modal.errRateLimit'));
       return;
     }
 
     if (!content.trim()) {
-      setError('Veuillez renseigner votre avis.');
+      setError(t('modal.errEmpty'));
       return;
     }
 
@@ -52,10 +51,9 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => 
     try {
       let uploadedImageUrl: string | undefined = undefined;
 
-      // File upload if provided (max 2MB)
       if (file) {
         if (file.size > 2 * 1024 * 1024) {
-          setError('La photo ne doit pas dépasser 2 Mo.');
+          setError(t('modal.errFileSize'));
           setIsSubmitting(false);
           return;
         }
@@ -87,12 +85,11 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => 
         productId: selectedProduct?.id,
         avatarUrl: uploadedImageUrl,
         photoUrl: uploadedImageUrl,
-        isVisible: false, // Pending moderation!
+        isVisible: false,
         status: 'pending' as const,
         isDemo: false,
       };
 
-      // Try inserting into Supabase
       if (supabase) {
         try {
           await supabase.from('testimonials').insert({
@@ -109,13 +106,12 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => 
         }
       }
 
-      // Add to store
       addTestimonial(newTestimonial);
       localStorage.setItem('delaafro_last_review_ts', now.toString());
 
       setIsSuccess(true);
     } catch (err: any) {
-      setError(err?.message || 'Une erreur est survenue.');
+      setError(err?.message || t('modal.errGeneric'));
     } finally {
       setIsSubmitting(false);
     }
@@ -124,7 +120,6 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => 
   const handleResetAndClose = () => {
     setIsSuccess(false);
     setError(null);
-    setClientName('');
     setCity('');
     setContent('');
     setFile(null);
@@ -139,56 +134,60 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-brun-nuit/80 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/75 backdrop-blur-sm"
             onClick={handleResetAndClose}
           />
 
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('modal.reviewTitle')}
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-lg rounded-3xl bg-creme-light p-6 sm:p-8 shadow-2xl border border-or/40 z-10 overflow-hidden max-h-[90vh] overflow-y-auto"
+            className="relative w-full max-w-lg rounded-[24px] bg-[var(--card)] text-[var(--text)] p-6 sm:p-8 shadow-2xl border border-[var(--border)] z-10 overflow-hidden max-h-[90vh] overflow-y-auto theme-surface"
           >
             <button
+              type="button"
               onClick={handleResetAndClose}
-              className="absolute top-5 right-5 p-2 rounded-full text-brun-nuit/60 hover:text-brun-nuit hover:bg-sable/30 transition-colors"
-              aria-label="Fermer"
+              className="absolute top-5 right-5 p-2 rounded-full text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--surface)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+              aria-label={t('modal.close')}
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5" aria-hidden="true" />
             </button>
 
             {isSuccess ? (
               <div className="py-8 text-center space-y-4">
                 <div className="w-16 h-16 rounded-full bg-feuille/20 text-feuille mx-auto flex items-center justify-center">
-                  <CheckCircle className="w-10 h-10" />
+                  <CheckCircle className="w-10 h-10" aria-hidden="true" />
                 </div>
-                <h3 className="card-title text-2xl font-bold text-brun-nuit">
-                  Merci pour votre confiance !
+                <h3 className="font-serif text-2xl font-bold text-[var(--text)]">
+                  {t('modal.successTitle')}
                 </h3>
-                <p className="prose-body text-base text-brun-nuit/85 max-w-sm mx-auto leading-relaxed">
-                  Votre avis a bien été enregistré. Il sera publié sur le site dès validation par notre équipe DELAAFRO.
+                <p className="text-base text-[var(--text-secondary)] max-w-sm mx-auto leading-relaxed">
+                  {t('modal.successBody')}
                 </p>
                 <div className="pt-4">
                   <Button variant="terracotta" onClick={handleResetAndClose}>
-                    Fermer
+                    {t('modal.close')}
                   </Button>
                 </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <span className="eyebrow text-xs text-cuivre block">
-                    Votre Expérience
+                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent-text)] block">
+                    {t('modal.reviewEyebrow')}
                   </span>
-                  <h3 className="card-title text-2xl font-bold text-brun-nuit">
-                    Laisser un avis sur vos soins
+                  <h3 className="font-serif text-2xl font-bold text-[var(--text)] mt-1">
+                    {t('modal.reviewTitle')}
                   </h3>
-                  <p className="card-text text-sm sm:text-base text-brun-nuit/75 mt-1">
-                    Partagez votre ressenti sur vos rituels capillaires DELAAFRO.
+                  <p className="text-sm text-[var(--text-secondary)] mt-1">
+                    {t('modal.reviewSubtitle')}
                   </p>
                 </div>
 
-                {/* Honeypot hidden input */}
+                {/* Honeypot */}
                 <input
                   type="text"
                   name="website"
@@ -200,16 +199,16 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => 
                 />
 
                 {error && (
-                  <div className="p-3 rounded-xl bg-terracotta/10 border border-terracotta/30 text-xs text-terracotta-deep flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 shrink-0" />
+                  <div className="p-3 rounded-xl bg-[var(--accent)]/12 border border-[var(--accent)]/35 text-xs text-[var(--accent-text)] flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
                     <span>{error}</span>
                   </div>
                 )}
 
-                {/* Rating selection */}
+                {/* Rating */}
                 <div>
-                  <label className="block text-xs font-semibold text-brun-nuit mb-1.5">
-                    Votre note globale *
+                  <label className="block text-xs font-semibold text-[var(--text)] mb-1.5">
+                    {t('modal.ratingLabel')}
                   </label>
                   <div className="flex items-center gap-2">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -217,102 +216,99 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => 
                         type="button"
                         key={star}
                         onClick={() => setRating(star)}
-                        className="p-1 text-or transition-transform hover:scale-110"
+                        aria-label={t('quote.ratingAria', { rating: star })}
+                        className="p-1 text-[var(--gold)] transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded"
                       >
                         <Star
                           className={`w-6 h-6 ${
-                            star <= rating ? 'fill-or text-or' : 'text-sable fill-sable/20'
+                            star <= rating ? 'fill-current' : 'opacity-25'
                           }`}
+                          aria-hidden="true"
                         />
                       </button>
                     ))}
-                    <span className="text-xs font-bold text-brun-nuit ml-2">{rating} / 5</span>
+                    <span className="text-xs font-bold text-[var(--text)] ml-2">{rating} / 5</span>
                   </div>
                 </div>
 
-                {/* City & Anonymous Notice (Sans noms de personnes) */}
+                {/* City */}
                 <div>
-                  <label className="block text-xs font-semibold text-brun-nuit mb-1">
-                    Votre ville ou quartier au Bénin (optionnel)
+                  <label className="block text-xs font-semibold text-[var(--text)] mb-1">
+                    {t('modal.cityLabel')}
                   </label>
                   <input
                     type="text"
-                    placeholder="Ex : Cotonou, Abidjan, Paris, Lomé, Dakar..."
+                    placeholder={t('modal.cityPlaceholder')}
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-sable bg-white text-xs text-brun-nuit focus:outline-none focus:ring-2 focus:ring-terracotta"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-xs text-[var(--text)] placeholder:text-[var(--text-secondary)]/70 focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
                   />
-                  <p className="text-[11px] text-brun-nuit/55 mt-1">
-                    🔒 Pour préserver votre anonymat, votre avis est publié sous l'intitulé <strong>« Cliente Vérifiée »</strong>.
+                  <p className="text-[11px] text-[var(--text-secondary)] mt-1">
+                    🔒 {t('modal.privacyNotice')}
                   </p>
                 </div>
 
-                {/* Product selection */}
+                {/* Product */}
                 <div>
-                  <label className="block text-xs font-semibold text-brun-nuit mb-1">
-                    Produit ou Gamme utilisé(e)
+                  <label className="block text-xs font-semibold text-[var(--text)] mb-1">
+                    {t('modal.productLabel')}
                   </label>
                   <select
                     value={productId}
                     onChange={(e) => setProductId(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-sable bg-white text-xs text-brun-nuit focus:outline-none focus:ring-2 focus:ring-terracotta"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-xs text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
                   >
-                    <option value="">Sélectionnez un produit...</option>
+                    <option value="">{t('modal.productPlaceholder')}</option>
                     {products.map((p) => (
                       <option key={p.id} value={p.id}>
-                        {p.name}
+                        {translateProductName(p.name)}
                       </option>
                     ))}
                   </select>
                 </div>
 
-                {/* Review content */}
+                {/* Comment */}
                 <div>
-                  <label className="block text-xs font-semibold text-brun-nuit mb-1">
-                    Votre avis détaillé *
+                  <label className="block text-xs font-semibold text-[var(--text)] mb-1">
+                    {t('modal.commentLabel')}
                   </label>
                   <textarea
-                    required
                     rows={4}
-                    placeholder="Qu'avez-vous pensé de la texture, du parfum, de l'hydratation et du résultat sur vos cheveux ?"
+                    required
+                    placeholder={t('modal.commentPlaceholder')}
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-sable bg-white text-xs text-brun-nuit focus:outline-none focus:ring-2 focus:ring-terracotta resize-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg)] text-xs text-[var(--text)] placeholder:text-[var(--text-secondary)]/70 focus:outline-none focus:ring-2 focus:ring-[var(--accent)] resize-none"
                   />
                 </div>
 
-                {/* Photo upload (optional) */}
+                {/* Photo upload */}
                 <div>
-                  <label className="block text-xs font-semibold text-brun-nuit mb-1">
-                    Photo de vos cheveux ou du soin (optionnel, max 2 Mo)
+                  <label className="block text-xs font-semibold text-[var(--text)] mb-1">
+                    {t('modal.photoLabel')}
                   </label>
-                  <label className="flex items-center gap-3 p-3 rounded-xl border border-dashed border-sable hover:border-terracotta bg-white cursor-pointer transition-colors">
-                    <Upload className="w-5 h-5 text-cuivre shrink-0" />
-                    <span className="text-xs text-brun-nuit/70 truncate">
-                      {file ? file.name : 'Choisir une image (JPG, PNG, WebP)...'}
+                  <label className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface)]/50 hover:border-[var(--accent)] cursor-pointer transition-colors text-xs text-[var(--text-secondary)]">
+                    <Upload className="w-4 h-4 text-[var(--accent)] shrink-0" aria-hidden="true" />
+                    <span className="truncate">
+                      {file ? t('modal.photoSelected', { name: file.name }) : t('modal.photoUploadCta')}
                     </span>
                     <input
                       type="file"
-                      accept="image/png,image/jpeg,image/webp"
-                      onChange={(e) => {
-                        if (e.target.files && e.target.files[0]) {
-                          setFile(e.target.files[0]);
-                        }
-                      }}
+                      accept="image/*"
+                      onChange={(e) => setFile(e.target.files?.[0] || null)}
                       className="hidden"
                     />
                   </label>
                 </div>
 
                 <div className="pt-2">
-                  <Button
+                  <button
                     type="submit"
-                    variant="terracotta"
-                    className="w-full"
                     disabled={isSubmitting}
+                    className="w-full py-3 rounded-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[#FBF5EC] text-xs font-bold uppercase tracking-wider shadow-md disabled:opacity-50 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
                   >
-                    {isSubmitting ? 'Envoi en cours...' : 'Envoyer mon avis'}
-                  </Button>
+                    {isSubmitting ? t('modal.submitting') : t('modal.submit')}
+                  </button>
                 </div>
               </form>
             )}
@@ -322,4 +318,3 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => 
     </AnimatePresence>
   );
 };
-
