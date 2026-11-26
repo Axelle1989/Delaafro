@@ -2,12 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+:root,
+[data-theme='light'] {
   --color-cream: #FAF3EA;
   --color-terracotta: #8B4A2B;
   --color-chocolate: #2B1A12;
   --color-gold: #C9A66B;
   --color-forest: #2F6B4F;
+
+  /* Thème clair — « Galerie éditoriale chaleureuse » */
+  --bg: #FBF5EC;
+  --surface: #F1E4D3;
+  --card: #FFFFFF;
+  --text: #3A2418;
+  --text-secondary: #6B4C39;
+  --border: #EAD9C4;
+  --accent: #C4622D;
+  --accent-hover: #A94E1F;
+  --accent-text: #A94E1F;
+  --gold: #D9A441;
+  --card-shadow: 0 18px 40px -20px rgba(58, 36, 24, 0.16);
+  --card-shadow-hover: 0 24px 50px -18px rgba(196, 98, 45, 0.26);
+  --media-filter: none;
+  --header-bg: rgba(251, 245, 236, 0.94);
+  --badge-verified-bg: rgba(251, 245, 236, 0.92);
+  --badge-verified-text: #2F5238;
+
+  /* Alias éditoriaux pilotés par le thème */
+  --editorial-cream: var(--bg);
+  --editorial-sand: var(--surface);
+  --editorial-terracotta: var(--accent);
+  --editorial-terracotta-hover: var(--accent-hover);
+  --editorial-brown: var(--text);
+  --editorial-gold: var(--gold);
+  --font-editorial-sans: 'DM Sans', 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+[data-theme='dark'] {
+  --bg: #1A110B;
+  --surface: #241811;
+  --card: #2E1F16;
+  --text: #F5EAD9;
+  --text-secondary: #CDB5A0;
+  --border: #4A3022;
+  --accent: #E07A45;
+  --accent-hover: #F0935F;
+  --accent-text: #F0935F;
+  --gold: #E3B85C;
+  --card-shadow: 0 0 0 1px #4A3022;
+  --card-shadow-hover: 0 0 0 1px #E07A45, 0 16px 36px -18px rgba(0, 0, 0, 0.55);
+  --media-filter: brightness(0.92);
+  --header-bg: rgba(26, 17, 11, 0.94);
+  --badge-verified-bg: rgba(26, 17, 11, 0.88);
+  --badge-verified-text: #A5D6A7;
+}
+
+.theme-surface,
+body {
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+
+[data-theme='dark'] body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.editorial-media {
+  filter: var(--media-filter);
+  transition: filter 200ms ease, transform 700ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-surface,
+  body,
+  .editorial-media {
+    transition: none !important;
+  }
 }
 
 @layer components {
